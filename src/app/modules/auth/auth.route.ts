@@ -1,24 +1,23 @@
 import express from 'express';
 import { requestValidation } from '../../middleware/validationRequest';
-import { AdminValidation } from './admin.validation';
-import { AdminController } from './admin.contoller';
+import { AuthValidation } from './auth.validation';
 
 const router = express.Router();
 
 router.post(
   '/login',
-  requestValidation.validateRequest(AdminValidation.createAdminZodSchema),
-  AdminController.createAdmin
+  requestValidation.validateRequest(AuthValidation.loginZodSchema),
+  AdminController.loginUser
 );
 router.post(
   '/signup',
-  requestValidation.validateRequest(AdminValidation.loginZodSchema),
-  AdminController.loginAdmin
+  requestValidation.validateRequest(AuthValidation.sighnupZodSchema),
+  AdminController.signupUser
 );
 
 router.post(
   '/refresh-token',
-  requestValidation.validateRequest(AdminValidation.refreshTokenZodSchema),
+  requestValidation.validateRequest(AuthValidation.refreshTokenZodSchema),
   AdminController.refreshToken
 );
 
