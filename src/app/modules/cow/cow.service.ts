@@ -118,7 +118,18 @@ const updateCow = async (
   return result;
 };
 
-const deleteCow = async (id: string): Promise<ICow | null> => {
+const deleteCow = async (
+  id: string,
+  tokenUser: JwtPayload | null
+): Promise<ICow | null> => {
+  const isExist = await Cow.findById(id);
+  if (isExist?.seller.toString() !== tokenUser?.id) {
+    throw new ApiError(
+      httpStatus.FORBIDDEN,
+      'Forbidden ,This user doesnt have the permission'
+    );
+  }
+
   const result = await Cow.findByIdAndDelete(id);
   if (!result) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to delete Cow');

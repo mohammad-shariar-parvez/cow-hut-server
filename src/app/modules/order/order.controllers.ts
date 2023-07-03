@@ -1,23 +1,24 @@
-import httpStatus from 'http-status'
-import catchAsync from '../../../shared/catchAsync'
-import sendResponse from '../../../shared/sendResponse'
-import { OrderService } from './order.service'
-import { Request, Response } from 'express'
-import { IOrder } from './order.interface'
+import httpStatus from 'http-status';
+import catchAsync from '../../../shared/catchAsync';
+import sendResponse from '../../../shared/sendResponse';
+import { OrderService } from './order.service';
+import { Request, Response } from 'express';
+import { IOrder } from './order.interface';
 
 const createOrders = catchAsync(async (req: Request, res: Response) => {
-  const { ...order } = req.body
-  const result = await OrderService.createOrder(order)
+  const { ...order } = req.body;
+  const result = await OrderService.createOrder(order);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'user created successfully!',
     data: result,
-  })
-})
+  });
+});
 
 const getAllOrders = catchAsync(async (req: Request, res: Response) => {
-  const result = await OrderService.getAllOrders()
+  const { ...requestedUser } = req.user;
+  const result = await OrderService.getAllOrders(requestedUser);
 
   sendResponse<IOrder[]>(res, {
     statusCode: httpStatus.OK,
@@ -25,9 +26,22 @@ const getAllOrders = catchAsync(async (req: Request, res: Response) => {
     message: 'User retrieved successfully !',
     meta: result.meta,
     data: result.data,
-  })
-})
+  });
+});
+
+const getOrder = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const result = await OrderService.getOrder(id);
+
+  sendResponse<IOrder>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Order retrieved successfully !',
+    data: result,
+  });
+});
 export const OrderController = {
   createOrders,
   getAllOrders,
-}
+  getOrder,
+};
