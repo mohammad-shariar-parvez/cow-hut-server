@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "E:\\PG-HERO-2\\assignments\\assignment-4\\cow-hub-server\\logs\\winston\\errors\\.bdb5562454e5a2854794750f05fd5bc9eac7abcd-audit.json",
+    "files": [
+        {
+            "date": 1688355694957,
+            "name": "E:\\PG-HERO-2\\assignments\\assignment-4\\cow-hub-server\\logs\\winston\\errors\\mspu-2023-03-07-09-error.log",
+            "hash": "6b8db390b31b0a585bb438425eab6f480bc508e8c015f7bcb7a0de126e37bf1d"
+        }
+    ],
+    "hashType": "sha256"
+}

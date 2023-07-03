@@ -1,28 +1,28 @@
-import { ICow, ICowFilters } from './cow.interface'
-import httpStatus from 'http-status'
-import ApiError from '../../../errors/ApiError'
-import { Cow } from './cow.model'
-import { IGenericResponse } from '../../../interface/error'
-import { IPaginationOptions } from '../../../interface/pagination'
-import { CowSearchAbleFields } from './cow.constants'
-import { paginationHelper } from '../../../helpers/paginationHelpers'
-import { SortOrder } from 'mongoose'
+import { ICow, ICowFilters } from './cow.interface';
+import httpStatus from 'http-status';
+import ApiError from '../../../errors/ApiError';
+import { Cow } from './cow.model';
+import { IGenericResponse } from '../../../interface/error';
+import { IPaginationOptions } from '../../../interface/pagination';
+import { CowSearchAbleFields } from './cow.constants';
+import { paginationHelper } from '../../../helpers/paginationHelpers';
+import { SortOrder } from 'mongoose';
 
 const createCow = async (payload: ICow): Promise<ICow | null> => {
-  const result = await Cow.create(payload)
+  const result = await Cow.create(payload);
   if (!result) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create cow')
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create cow');
   }
-  return result
-}
+  return result;
+};
 
 const getAllCows = async (
   filters: ICowFilters,
   paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<ICow[]>> => {
-  const { searchTerm, ...filtersData } = filters
+  const { searchTerm, ...filtersData } = filters;
 
-  const andConditions = []
+  const andConditions = [];
 
   if (searchTerm) {
     andConditions.push({
@@ -32,7 +32,7 @@ const getAllCows = async (
           $options: 'i',
         },
       })),
-    })
+    });
   }
 
   if (Object.keys(filtersData).length) {
@@ -41,37 +41,37 @@ const getAllCows = async (
         if (field === 'minPrice') {
           return {
             price: { $gte: parseInt(value as string) },
-          }
+          };
         }
         if (field === 'maxPrice') {
           return {
             price: { $lte: parseInt(value as string) },
-          }
+          };
         }
         return {
           [field]: value,
-        }
+        };
       }),
-    })
+    });
   }
 
   const { page, limit, skip, sortBy, sortOrder } =
-    paginationHelper.calculatePagination(paginationOptions)
+    paginationHelper.calculatePagination(paginationOptions);
 
-  const sortCondition: { [key: string]: SortOrder } = {}
+  const sortCondition: { [key: string]: SortOrder } = {};
   if (sortBy && sortOrder) {
-    sortCondition[sortBy] = sortOrder
+    sortCondition[sortBy] = sortOrder;
   }
 
   const whereConditions =
-    andConditions.length > 0 ? { $and: andConditions } : {}
+    andConditions.length > 0 ? { $and: andConditions } : {};
 
   const result = await Cow.find(whereConditions)
     .populate('seller')
     .sort(sortCondition)
     .skip(skip)
-    .limit(limit)
-  const total = await Cow.countDocuments(whereConditions)
+    .limit(limit);
+  const total = await Cow.countDocuments(whereConditions);
   return {
     meta: {
       page,
@@ -79,40 +79,40 @@ const getAllCows = async (
       total,
     },
     data: result,
-  }
-}
+  };
+};
 
 const getSingleCow = async (id: string): Promise<ICow | null> => {
-  const result = await Cow.findById(id)
+  const result = await Cow.findById(id);
 
   if (!result) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Cow not found!')
+    throw new ApiError(httpStatus.NOT_FOUND, 'Cow not found!');
   }
-  return result
-}
+  return result;
+};
 
 const updateCow = async (
   id: string,
   payload: Partial<ICow>
 ): Promise<ICow | null> => {
-  const isExist = await Cow.findById(id)
+  const isExist = await Cow.findById(id);
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Cow not found!')
+    throw new ApiError(httpStatus.NOT_FOUND, 'Cow not found!');
   }
   const result = await Cow.findByIdAndUpdate(id, payload, {
     new: true, // return new document of the DB
-  })
-  return result
-}
+  });
+  return result;
+};
 
 const deleteCow = async (id: string): Promise<ICow | null> => {
-  const result = await Cow.findByIdAndDelete(id)
+  const result = await Cow.findByIdAndDelete(id);
   if (!result) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to delete Cow')
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to delete Cow');
   }
 
-  return result
-}
+  return result;
+};
 
 export const CowService = {
   createCow,
@@ -120,4 +120,4 @@ export const CowService = {
   getSingleCow,
   updateCow,
   deleteCow,
-}
+};

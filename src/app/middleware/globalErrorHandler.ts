@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
+
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import config from '../../config';
 import { IGenericErrorMessage } from '../../interface/error';
@@ -9,6 +9,7 @@ import handleCastError from '../../errors/handleCastError';
 import ApiError from '../../errors/ApiError';
 import { ZodError } from 'zod';
 import handleZodError from '../../errors/handleZodError';
+import { errorLogger } from '../../shared/logger';
 
 const globalErrorHandler: ErrorRequestHandler = (
   error,
@@ -16,9 +17,10 @@ const globalErrorHandler: ErrorRequestHandler = (
   res: Response,
   next: NextFunction
 ) => {
+  // eslint-disable-next-line no-unused-expressions
   config.env === 'development'
-    ? console.log('global error handler', error)
-    : console.log('globalErrorHandler', error);
+    ? console.log(`🐱‍🏍 globalErrorHandler ~~`, error)
+    : errorLogger.error(`🐱‍🏍 globalErrorHandler ~~`, error);
 
   let statusCode = 500;
   let message = 'somethings went wrong !';
