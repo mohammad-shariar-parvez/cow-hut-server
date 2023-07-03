@@ -21,4 +21,4 @@ router.post(
   AdminController.refreshToken
 );
 
-export const AdminRoutes = router;
+export const AuthRoutes = router;
