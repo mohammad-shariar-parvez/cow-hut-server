@@ -59,4 +59,4 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export const AuthController = { createAdmin, loginAdmin, refreshToken };
+export const AuthController = { signupUser, loginUser, refreshToken };
