@@ -9,7 +9,6 @@ import httpStatus from 'http-status';
 
 const createAdmin: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    console.log('Route hitted');
     const { ...adminData } = req.body;
     const result = await AdminSevice.createAdmin(adminData);
 

@@ -6,7 +6,7 @@ export type UserName = {
 };
 
 export type IAdmin = {
-  id: string;
+  id?: string;
   phoneNumber: string;
   role: 'admin';
   password: string;

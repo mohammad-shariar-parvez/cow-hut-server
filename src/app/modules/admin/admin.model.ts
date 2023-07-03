@@ -1,16 +1,14 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
+
 import { Schema, model } from 'mongoose';
 import { AdminModel, IAdmin } from './admin.interface';
+import bcrypt from 'bcrypt';
+import config from '../../../config';
 
 const AdminSchema = new Schema<IAdmin, AdminModel>(
   {
-    id: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     phoneNumber: {
       type: String,
-      unique: true,
       required: true,
     },
     role: {
@@ -21,7 +19,7 @@ const AdminSchema = new Schema<IAdmin, AdminModel>(
     password: {
       type: String,
       required: true,
-      select: 0,
+      select: false,
     },
     name: {
       type: {
@@ -45,8 +43,22 @@ const AdminSchema = new Schema<IAdmin, AdminModel>(
     timestamps: true,
     toJSON: {
       virtuals: true,
+      transform: function (doc, ret) {
+        delete ret.password; // Exclude password field from the response
+        return ret;
+      },
     },
   }
 );
+
+AdminSchema.pre('save', async function (next) {
+  //hash password
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bycrypt_salt_rounds)
+  );
+  next();
+});
 
 export const Admin = model<IAdmin, AdminModel>('Admin', AdminSchema);
