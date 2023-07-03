@@ -1,10 +1,10 @@
-import { Model, Types } from 'mongoose'
-import { IUser } from '../user/user.interface'
+import { Model, Types } from 'mongoose';
+import { IUser } from '../user/user.interface';
 
 export type ICow = {
-  name: string
-  age: number
-  price: number
+  name: string;
+  age: number;
+  price: number;
   location:
     | 'Dhaka'
     | 'Chattogram'
@@ -13,7 +13,7 @@ export type ICow = {
     | 'Sylhet'
     | 'Comilla'
     | 'Rangpur'
-    | 'Mymensingh'
+    | 'Mymensingh';
   breed:
     | 'Brahman'
     | 'Nellore'
@@ -21,18 +21,25 @@ export type ICow = {
     | 'Gir'
     | 'Indigenous'
     | 'Tharparkar'
-    | 'Kankrej'
-  weight: number
-  label: 'for sale' | 'sold out'
-  category: 'Dairy' | 'Beef ' | 'DualPurpose'
-  seller: Types.ObjectId | IUser
-}
+    | 'Kankrej';
+  weight: number;
+  label: 'for sale' | 'sold out';
+  category: 'Dairy' | 'Beef ' | 'DualPurpose';
+  seller: Types.ObjectId | IUser;
+};
 
-export type CowModel = Model<ICow, Record<string, unknown>>
+export type CowModel = Model<ICow, Record<string, unknown>>;
 
 export type ICowFilters = {
-  searchTerm?: string
-  minPrice?: number
-  maxPrice?: number
-  location?: string
-}
+  searchTerm?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  location?: string;
+};
+
+export type ITokenUser = {
+  id: string;
+  role: string;
+  iat: number;
+  exp: number;
+};

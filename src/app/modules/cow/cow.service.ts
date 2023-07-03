@@ -7,6 +7,7 @@ import { IPaginationOptions } from '../../../interface/pagination';
 import { CowSearchAbleFields } from './cow.constants';
 import { paginationHelper } from '../../../helpers/paginationHelpers';
 import { SortOrder } from 'mongoose';
+import { JwtPayload } from 'jsonwebtoken';
 
 const createCow = async (payload: ICow): Promise<ICow | null> => {
   const result = await Cow.create(payload);
@@ -93,12 +94,24 @@ const getSingleCow = async (id: string): Promise<ICow | null> => {
 
 const updateCow = async (
   id: string,
-  payload: Partial<ICow>
+  payload: Partial<ICow>,
+  tokenUser: JwtPayload | null
 ): Promise<ICow | null> => {
   const isExist = await Cow.findById(id);
+  // console.log('IS EXIST', isExist);
+  // console.log('YEEE MIELSE', isExist?.seller.toString(), tokenUser?.id);
+
+  if (isExist?.seller.toString() !== tokenUser?.id) {
+    throw new ApiError(
+      httpStatus.FORBIDDEN,
+      'Forbidden ,This user doesnt have the permission'
+    );
+  }
+
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Cow not found!');
   }
+
   const result = await Cow.findByIdAndUpdate(id, payload, {
     new: true, // return new document of the DB
   });
