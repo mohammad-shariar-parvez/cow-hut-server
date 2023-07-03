@@ -42,7 +42,7 @@ UserSchema.statics.isUserExist = async function (
   );
 };
 
-UserSchema.statics.isRefreshedAdminExist = async function (
+UserSchema.statics.isRefreshedUserExist = async function (
   id: string
 ): Promise<IUser | null> {
   return await User.findById(id, {

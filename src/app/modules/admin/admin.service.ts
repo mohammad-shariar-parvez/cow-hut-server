@@ -21,7 +21,7 @@ const loginAdmin = async (payload: ILogin): Promise<ILoginResponse> => {
 
   //  // access to our instance methods
   const isUserExist = await Admin.isUserExist(phoneNumber);
-  console.log('is USER EXIST', isUserExist);
+  // console.log('is USER EXIST', isUserExist);
 
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
