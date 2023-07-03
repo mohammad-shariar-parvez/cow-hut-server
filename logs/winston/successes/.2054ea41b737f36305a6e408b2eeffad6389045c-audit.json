@@ -19,6 +19,21 @@
             "date": 1688360636858,
             "name": "E:\\PG-HERO-2\\assignments\\assignment-4\\cow-hub-server\\logs\\winston\\successes\\mspu-2023-03-07-11-success.log",
             "hash": "ea94dc9e99766e69880bc52aba7aabca85df7f7cf1b846131307ac186b9fea3d"
+        },
+        {
+            "date": 1688366126849,
+            "name": "E:\\PG-HERO-2\\assignments\\assignment-4\\cow-hub-server\\logs\\winston\\successes\\mspu-2023-03-07-12-success.log",
+            "hash": "5ab6760dcf24f654b659a289dc69805485b1b316e68753fabbaea2e8cb931bf3"
+        },
+        {
+            "date": 1688367621027,
+            "name": "E:\\PG-HERO-2\\assignments\\assignment-4\\cow-hub-server\\logs\\winston\\successes\\mspu-2023-03-07-13-success.log",
+            "hash": "bfc77393ab03b449dad1b1ead631a23b7691cea9434adedda8d5d99e125e923b"
+        },
+        {
+            "date": 1688371440342,
+            "name": "E:\\PG-HERO-2\\assignments\\assignment-4\\cow-hub-server\\logs\\winston\\successes\\mspu-2023-03-07-14-success.log",
+            "hash": "113f75e5a345e97879c1452dd77be31c9244d3c2d2348ffe5fce80090b82342c"
         }
     ],
     "hashType": "sha256"

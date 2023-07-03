@@ -15,9 +15,29 @@ export type IAdmin = {
 };
 
 export type AdminModel = {
-  isUserExist(id: string): Promise<Pick<IAdmin, 'id' | 'password' | 'role'>>;
+  isUserExist(
+    id: string
+  ): Promise<Pick<IAdmin, 'id' | 'phoneNumber' | 'password' | 'role'>>;
+  isRefreshedAdminExist(
+    id: string
+  ): Promise<Pick<IAdmin, 'id' | 'phoneNumber' | 'password' | 'role'>>;
+
   isPasswordMatched(
     givenPassword: string,
     savedPassword: string
   ): Promise<boolean>;
 } & Model<IAdmin>;
+
+export type ILoginUser = {
+  phoneNumber: string;
+  password: string;
+};
+
+export type ILoginUserResponse = {
+  accessToken: string;
+  refreshToken?: string;
+};
+
+export type IRefreshTokenResponse = {
+  accessToken: string;
+};
