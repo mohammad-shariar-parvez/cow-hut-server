@@ -1,22 +1,22 @@
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
-import {
-  IAdmin,
-  ILoginUser,
-  ILoginUserResponse,
-  IRefreshTokenResponse,
-} from './admin.interface';
+import { IAdmin } from './admin.interface';
 import { Admin } from './admin.model';
 import config from '../../../config';
 import { Secret } from 'jsonwebtoken';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
+import {
+  ILogin,
+  ILoginResponse,
+  IRefreshTokenResponse,
+} from '../../../interface/common';
 
 const createAdmin = async (adminData: IAdmin): Promise<IAdmin | null> => {
   const result = await Admin.create(adminData);
   return result;
 };
 
-const loginAdmin = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
+const loginAdmin = async (payload: ILogin): Promise<ILoginResponse> => {
   const { phoneNumber, password } = payload;
 
   //  // access to our instance methods

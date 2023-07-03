@@ -6,6 +6,7 @@ export type UserName = {
 };
 
 export type IUser = {
+  id?: string;
   role: 'seller' | 'buyer';
   phoneNumber: string;
   password: string;
@@ -16,4 +17,16 @@ export type IUser = {
   income?: number;
 };
 
-export type UserModel = Model<IUser, Record<string, unknown>>;
+export type UserModel = {
+  isUserExist(
+    id: string
+  ): Promise<Pick<IUser, 'id' | 'phoneNumber' | 'password' | 'role'>>;
+  isRefreshedUserExist(
+    id: string
+  ): Promise<Pick<IUser, 'id' | 'phoneNumber' | 'password' | 'role'>>;
+
+  isPasswordMatched(
+    givenPassword: string,
+    savedPassword: string
+  ): Promise<boolean>;
+} & Model<IUser>;

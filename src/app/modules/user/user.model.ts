@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { IUser, UserModel } from './user.interface';
 import { gender } from './user.constants';
 
-const userSchema = new Schema<IUser>(
+const UserSchema = new Schema<IUser>(
   {
     role: { type: String, enum: ['seller', 'buyer'], required: true },
     password: { type: String, required: true },
@@ -29,5 +29,42 @@ const userSchema = new Schema<IUser>(
     },
   }
 );
+
+UserSchema.statics.isUserExist = async function (
+  phoneNumber: string
+): Promise<IUser | null> {
+  return await User.findOne(
+    { phoneNumber },
+    { phoneNumber: 1, password: 1, role: 1, id: 1 }
+  );
+};
+
+UserSchema.statics.isRefreshedAdminExist = async function (
+  id: string
+): Promise<IAdmin | null> {
+  return await Admin.findById(id, {
+    phoneNumber: 1,
+    password: 1,
+    role: 1,
+    id: 1,
+  });
+};
+
+UserSchema.statics.isPasswordMatched = async function (
+  givenPassword: string,
+  savedPassword: string
+): Promise<boolean> {
+  return await bcrypt.compare(givenPassword, savedPassword);
+};
+
+UserSchema.pre('save', async function (next) {
+  //hash password
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bycrypt_salt_rounds)
+  );
+  next();
+});
 
 export const User = model<IUser, UserModel>('User', userSchema);

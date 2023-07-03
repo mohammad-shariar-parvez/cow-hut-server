@@ -54,8 +54,6 @@ const AdminSchema = new Schema<IAdmin, AdminModel>(
 AdminSchema.statics.isUserExist = async function (
   phoneNumber: string
 ): Promise<IAdmin | null> {
-  console.log('AAMI JEI ID PASSI', phoneNumber);
-
   return await Admin.findOne(
     { phoneNumber },
     { phoneNumber: 1, password: 1, role: 1, id: 1 }

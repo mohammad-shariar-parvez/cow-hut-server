@@ -3,10 +3,11 @@ import { Request, RequestHandler, Response } from 'express';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 
-import { IAdmin, IRefreshTokenResponse } from './admin.interface';
+import { IAdmin } from './admin.interface';
 import { AdminSevice } from './admin.service';
 import httpStatus from 'http-status';
 import config from '../../../config';
+import { IRefreshTokenResponse } from '../../../interface/common';
 
 const createAdmin: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
