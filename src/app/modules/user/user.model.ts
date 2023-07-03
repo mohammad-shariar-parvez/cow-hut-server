@@ -1,6 +1,6 @@
-import { Schema, model } from 'mongoose'
-import { IUser, UserModel } from './user.interface'
-import { gender } from './user.constants'
+import { Schema, model } from 'mongoose';
+import { IUser, UserModel } from './user.interface';
+import { gender } from './user.constants';
 
 const userSchema = new Schema<IUser>(
   {
@@ -15,8 +15,8 @@ const userSchema = new Schema<IUser>(
     },
     gender: { type: String, enum: gender },
     address: { type: String },
-    budget: { type: Number },
-    income: { type: Number },
+    budget: { type: Number, default: 0 },
+    income: { type: Number, default: 0 },
   },
   {
     timestamps: true,
@@ -24,6 +24,6 @@ const userSchema = new Schema<IUser>(
       virtuals: true,
     },
   }
-)
+);
 
-export const User = model<IUser, UserModel>('User', userSchema)
+export const User = model<IUser, UserModel>('User', userSchema);
