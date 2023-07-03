@@ -7,7 +7,7 @@ import { IAdmin } from './admin.interface';
 import { AdminSevice } from './admin.service';
 import httpStatus from 'http-status';
 import config from '../../../config';
-import { IRefreshTokenResponse } from '../../../interface/common';
+import { IRefreshTokenResponse } from '../auth/auth.interface';
 
 const createAdmin: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {

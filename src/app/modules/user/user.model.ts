@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from 'mongoose';
 import { IUser, UserModel } from './user.interface';
 import { gender } from './user.constants';
+import bcrypt from 'bcrypt';
+import config from '../../../config';
 
 const UserSchema = new Schema<IUser>(
   {
@@ -41,8 +44,8 @@ UserSchema.statics.isUserExist = async function (
 
 UserSchema.statics.isRefreshedAdminExist = async function (
   id: string
-): Promise<IAdmin | null> {
-  return await Admin.findById(id, {
+): Promise<IUser | null> {
+  return await User.findById(id, {
     phoneNumber: 1,
     password: 1,
     role: 1,
@@ -67,4 +70,4 @@ UserSchema.pre('save', async function (next) {
   next();
 });
 
-export const User = model<IUser, UserModel>('User', userSchema);
+export const User = model<IUser, UserModel>('User', UserSchema);

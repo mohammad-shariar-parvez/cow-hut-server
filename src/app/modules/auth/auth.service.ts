@@ -1,36 +1,34 @@
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
-import {
-  IAdmin,
-  ILoginUser,
-  ILoginUserResponse,
-  IRefreshTokenResponse,
-} from './admin.interface';
-import { Admin } from './admin.model';
+
 import config from '../../../config';
 import { Secret } from 'jsonwebtoken';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import { IUser } from '../user/user.interface';
 import { User } from '../user/user.model';
+import {
+  ILogin,
+  ILoginResponse,
+  IRefreshTokenResponse,
+} from './auth.interface';
 
 const signupUser = async (user: IUser): Promise<IUser | null> => {
   const result = await User.create(user);
   return result;
 };
 
-const loginAdmin = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
+const loginUser = async (payload: ILogin): Promise<ILoginResponse> => {
   const { phoneNumber, password } = payload;
 
   //  // access to our instance methods
-  const isUserExist = await Admin.isUserExist(phoneNumber);
-  console.log('is USER EXIST', isUserExist);
+  const isUserExist = await User.isUserExist(phoneNumber);
 
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
   }
   if (
     isUserExist.password &&
-    !(await Admin.isPasswordMatched(password, isUserExist.password))
+    !(await User.isPasswordMatched(password, isUserExist.password))
   ) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
   }
@@ -66,16 +64,13 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   } catch (err) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
   }
-  console.log('VARIFIED TOKEN', verifiedToken);
 
   const { id } = verifiedToken;
 
   // case- user deleted but he has refresh token
   // checking deleted user's refresh token
 
-  const isUserExist = await Admin.isRefreshedAdminExist(id);
-  console.log('IIIIDDD IDD', id);
-  console.log('IS USER EXIST', isUserExist);
+  const isUserExist = await User.isRefreshedUserExist(id);
 
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
@@ -98,6 +93,6 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 
 export const AuthSevice = {
   signupUser,
-  loginAdmin,
+  loginUser,
   refreshToken,
 };

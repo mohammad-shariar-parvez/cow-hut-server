@@ -9,7 +9,7 @@ import {
   ILogin,
   ILoginResponse,
   IRefreshTokenResponse,
-} from '../../../interface/common';
+} from '../auth/auth.interface';
 
 const createAdmin = async (adminData: IAdmin): Promise<IAdmin | null> => {
   const result = await Admin.create(adminData);
@@ -64,7 +64,7 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   } catch (err) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
   }
-  console.log('VARIFIED TOKEN', verifiedToken);
+  // console.log('VARIFIED TOKEN', verifiedToken);
 
   const { id } = verifiedToken;
 
@@ -72,8 +72,8 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   // checking deleted user's refresh token
 
   const isUserExist = await Admin.isRefreshedAdminExist(id);
-  console.log('IIIIDDD IDD', id);
-  console.log('IS USER EXIST', isUserExist);
+  // console.log('IIIIDDD IDD', id);
+  // console.log('IS USER EXIST', isUserExist);
 
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
