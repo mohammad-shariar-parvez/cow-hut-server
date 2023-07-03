@@ -11,7 +11,7 @@ export type IAdmin = {
   role: 'admin';
   password: string;
   name: UserName;
-  address?: string;
+  address: string;
 };
 
 export type AdminModel = {
