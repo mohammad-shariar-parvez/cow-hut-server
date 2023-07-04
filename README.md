@@ -1,32 +1,49 @@
-### Live Link:
+### Live Link: https://cow-hub-server-auth.vercel.app/
 
 ### Application Routes:
 
-#### User
+### Auth (User)
 
-- api/v1/users (GET)
-- api/v1/users/user-create (POST)
-- api/v1/users/648c5ef68fd2c4e8a33d19c1 (Single GET) Include an id that is saved in your database
-- api/v1/users/648c5ef68fd2c4e8a33d19c1 (PATCH)
-- api/v1/users/648c5ef68fd2c4e8a33d19c1648c5ef68fd2c4e8a33d19c1 (DELETE) Include an id that is saved in your database
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/auth/login (POST)
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/auth/signup (POST)
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/auth/refresh-token (POST)
+
+### Auth (Admin)
+
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/admins/create-admin (POST)
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/admins/login (POST)
+
+### User
+
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/users (GET)
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/users/64a4031de22a557f1283502d(Single GET)
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/users/64a4132e0126174778b7141c(PATCH)
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/users/64a4132e0126174778b7141c (DELETE)
 
 #### Cows
 
-- api/v1/cows (GET)
-- api/v1/cows/cow-create (POST)
-- api/v1/cows/648d2774761726cbba1759de (Single GET) Include an id that is saved in your database
-- api/v1/cows/648d2774761726cbba1759de (PATCH)
-- api/v1/cows/648d2774761726cbba1759de (DELETE) Include an id that is saved in your database
-
-### Pagination and Filtering routes of Cows
-
-- api/v1/cows?pag=1&limit=10
-- api/v1/cows?sortBy=price&sortOrder=asc
-- api/v1/cows?minPrice=20000&maxPrice=70000
-- api/v1/cows?location=Chattogram
-- api/v1/cows?searchTerm=Cha
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/cows (GET)
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/cows (POST)
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/cows/64a40376e22a557f12835033 (Single GET)
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/cows/64a41d7b715626b419a69efc(PATCH)
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/cows/64a41d7b715626b419a69efc (DELETE)
 
 #### Orders
 
-- api/v1/orders (GET)
-- api/v1/orders/order-create (POST)
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/orders (POST)
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/orders (GET)
+
+## Bonus Part
+
+#### Admin
+
+-Route: /api/v1/admins/create-admin (POST)
+
+#### My Profile
+
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/users/my-profile (GET)
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/users/my-profile (PATCH)
+
+#### Order:
+
+- Route: https://cow-hub-server-auth.vercel.app/api/v1/orders/64a4044fb33fd115531737b4 (GET)
