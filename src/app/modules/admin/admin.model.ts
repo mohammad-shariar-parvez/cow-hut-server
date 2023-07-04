@@ -7,10 +7,6 @@ import config from '../../../config';
 
 const AdminSchema = new Schema<IAdmin, AdminModel>(
   {
-    phoneNumber: {
-      type: String,
-      required: true,
-    },
     role: {
       type: String,
       required: true,
@@ -20,6 +16,11 @@ const AdminSchema = new Schema<IAdmin, AdminModel>(
       type: String,
       required: true,
       select: false,
+    },
+    phoneNumber: {
+      type: String,
+      unique: true,
+      required: true,
     },
     name: {
       type: {
@@ -43,11 +44,8 @@ const AdminSchema = new Schema<IAdmin, AdminModel>(
     timestamps: true,
     toJSON: {
       virtuals: true,
-      transform: function (doc, ret) {
-        delete ret.password; // Exclude password field from the response
-        return ret;
-      },
     },
+    strict: 'throw',
   }
 );
 
