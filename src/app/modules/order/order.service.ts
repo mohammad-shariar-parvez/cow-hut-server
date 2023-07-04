@@ -23,7 +23,7 @@ const createOrder = async (payload: IOrder): Promise<IOrder | null> => {
   if (cowDetails.label !== 'for sale') {
     throw new ApiError(httpStatus.NOT_FOUND, `This cow is already sold out !`);
   }
-  if (budgetAmount?.budget < cowDetails.price) {
+  if (budgetAmount?.budget && budgetAmount.budget < cowDetails.price) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
       `haven't enough money to purchase`
@@ -36,7 +36,9 @@ const createOrder = async (payload: IOrder): Promise<IOrder | null> => {
 
     const buyerUpdate = await User.findOneAndUpdate(
       { _id: buyer },
-      { budget: budgetAmount.budget - cowDetails.price },
+      {
+        budget: budgetAmount?.budget && budgetAmount.budget - cowDetails.price,
+      },
       {
         session,
       }
@@ -54,7 +56,7 @@ const createOrder = async (payload: IOrder): Promise<IOrder | null> => {
 
     const SellerUpdate = await User.findOneAndUpdate(
       { _id: cowDetails.seller },
-      { income: sellerInfo.income + cowDetails.price },
+      { income: sellerInfo.income && sellerInfo.income + cowDetails.price },
       {
         session,
       }
@@ -94,6 +96,8 @@ const createOrder = async (payload: IOrder): Promise<IOrder | null> => {
 const getAllOrders = async (
   requestedUser: any
 ): Promise<IGenericResponse<IOrder[]>> => {
+  console.log(requestedUser);
+
   const result = await Order.find()
     .sort()
     .populate({
@@ -119,7 +123,7 @@ const getAllOrders = async (
     };
   } else if (requestedUser.role === 'buyer') {
     const specificBuyerOrder = result.filter(
-      item => item.buyer.id === requestedUser._id
+      item => item.buyer?.id === requestedUser.id
     );
     const total = await specificBuyerOrder.length;
     return {
@@ -131,17 +135,9 @@ const getAllOrders = async (
       data: specificBuyerOrder,
     };
   } else {
-    // const specificSellerForOrder = result.filter(
-    //   item =>
-    //     // item.cow.seller.equals(sellerId)
-    //     item.cow.seller === sellerId
-    // )
+    const objectId = new mongoose.Types.ObjectId(requestedUser.id);
+    console.log('OBJECT ID', objectId);
 
-    /* 
-    const specificSellerForOrder = result.filter(
-      item => item.cow.seller === requestedUser._id
-    ) */
-    const objectId = new mongoose.Types.ObjectId(requestedUser._id);
     const specificSellerForOrder = await Order.aggregate([
       {
         $match: {},

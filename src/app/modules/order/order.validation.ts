@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
 const createOrderZodSchema = z.object({
   body: z.object({
@@ -13,8 +13,8 @@ const createOrderZodSchema = z.object({
       })
       .optional(),
   }),
-})
+});
 
 export const OrderValidation = {
   createOrderZodSchema,
-}
+};
