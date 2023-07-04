@@ -15,7 +15,7 @@ export type IAdmin = {
 };
 
 export type AdminModel = {
-  isUserExist(
+  isAdminExist(
     id: string
   ): Promise<Pick<IAdmin, 'id' | 'phoneNumber' | 'password' | 'role'>>;
   isRefreshedAdminExist(
