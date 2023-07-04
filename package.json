@@ -1,9 +1,10 @@
 {
-  "name": "university-management-auth-service-backend",
+  "name": "cow-hub-server-auth",
   "version": "1.0.0",
   "description": "",
   "main": "src/server.ts",
   "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "start": "ts-node-dev --respawn --transpile-only src/server.ts",
     "lint:check": "eslint --ignore-path .eslintignore --ext .js,.ts .",
     "lint:fix": "eslint . --fix",

@@ -9,7 +9,7 @@ import handleCastError from '../../errors/handleCastError';
 import ApiError from '../../errors/ApiError';
 import { ZodError } from 'zod';
 import handleZodError from '../../errors/handleZodError';
-import { errorLogger } from '../../shared/logger';
+// import { errorLogger } from '../../shared/logger';
 
 const globalErrorHandler: ErrorRequestHandler = (
   error,
@@ -20,7 +20,7 @@ const globalErrorHandler: ErrorRequestHandler = (
   // eslint-disable-next-line no-unused-expressions
   config.env === 'development'
     ? console.log(`🐱‍🏍 globalErrorHandler ~~`, error)
-    : errorLogger.error(`🐱‍🏍 globalErrorHandler ~~`, error);
+    : console.log(`🐱‍🏍 globalErrorHandler ~~`, error);
 
   let statusCode = 500;
   let message = 'somethings went wrong !';
