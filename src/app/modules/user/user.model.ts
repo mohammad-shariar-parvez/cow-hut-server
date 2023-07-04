@@ -5,7 +5,7 @@ import { gender } from './user.constants';
 import bcrypt from 'bcrypt';
 import config from '../../../config';
 
-const UserSchema = new Schema<IUser>(
+const UserSchema = new Schema<IUser, UserModel>(
   {
     role: { type: String, enum: ['seller', 'buyer'], required: true },
     password: { type: String, required: true },
@@ -30,6 +30,7 @@ const UserSchema = new Schema<IUser>(
         return ret;
       },
     },
+    strict: 'throw', // Add the strict option here
   }
 );
 

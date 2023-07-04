@@ -1,9 +1,14 @@
-import { z } from 'zod'
-import { gender, role } from './user.constants'
+import { z } from 'zod';
+import { gender, role } from './user.constants';
 
 const createUserZodSchema = z.object({
   body: z.object({
-    password: z.string().optional(),
+    password: z.string({
+      required_error: 'Password is required',
+    }),
+    phoneNumber: z.string({
+      required_error: 'Phone Number is required',
+    }),
     name: z.object({
       firstName: z.string({
         required_error: 'First name is required',
@@ -23,16 +28,29 @@ const createUserZodSchema = z.object({
     address: z.string({
       required_error: 'Address is required',
     }),
-    budget: z.number({
-      required_error: 'Budget  is required',
-    }),
-    income: z.number({
-      required_error: 'Income is required',
-    }),
+    budget: z.number().optional(),
+    income: z.number().optional(),
   }),
-})
+});
 
 const updateUserZodSchema = z.object({
+  body: z.object({
+    password: z.string().optional(),
+    name: z
+      .object({
+        firstName: z.string().optional(),
+        lastName: z.string().optional(),
+      })
+      .optional(),
+    role: z.enum([...role] as [string, ...string[]]).optional(),
+    gender: z.enum([...gender] as [string, ...string[]]).optional(),
+    address: z.string().optional(),
+    budget: z.number().optional(),
+    income: z.number().optional(),
+  }),
+});
+
+const updateProfileZodSchema = z.object({
   body: z.object({
     password: z.string().optional(),
     name: z
@@ -75,9 +93,10 @@ const updateUserZodSchema = z.object({
       })
       .optional(),
   }),
-})
+});
 
 export const UserValidation = {
   createUserZodSchema,
   updateUserZodSchema,
-}
+  updateProfileZodSchema,
+};

@@ -94,6 +94,11 @@
             "date": 1688436077210,
             "name": "E:\\PG-HERO-2\\assignments\\assignment-4\\cow-hub-server\\logs\\winston\\successes\\mspu-2023-04-07-08-success.log",
             "hash": "6eaab9245da075027b6bc3b27fafeac4e502fa969ae87b96846cbc5600b58d33"
+        },
+        {
+            "date": 1688439900242,
+            "name": "E:\\PG-HERO-2\\assignments\\assignment-4\\cow-hub-server\\logs\\winston\\successes\\mspu-2023-04-07-09-success.log",
+            "hash": "744e18c43508db040aac226ff175ecdaf44fd5817df9d911798808d967b3cde3"
         }
     ],
     "hashType": "sha256"
