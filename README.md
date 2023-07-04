@@ -37,7 +37,7 @@
 
 #### Admin
 
--Route: /api/v1/admins/create-admin (POST)
+-Route: https://cow-hub-server-auth.vercel.app/api/v1/admins/create-admin (POST)
 
 #### My Profile
 
