@@ -7,6 +7,7 @@ import { Order } from './order.model';
 import { User } from '../user/user.model';
 import { Cow } from '../cow/cow.model';
 import mongoose from 'mongoose';
+import { JwtPayload } from 'jsonwebtoken';
 
 const createOrder = async (payload: IOrder): Promise<IOrder | null> => {
   let newOrderData = null;
@@ -96,7 +97,7 @@ const createOrder = async (payload: IOrder): Promise<IOrder | null> => {
 const getAllOrders = async (
   requestedUser: any
 ): Promise<IGenericResponse<IOrder[]>> => {
-  console.log(requestedUser);
+  // console.log(requestedUser);
 
   const result = await Order.find()
     .sort()
@@ -136,7 +137,7 @@ const getAllOrders = async (
     };
   } else {
     const objectId = new mongoose.Types.ObjectId(requestedUser.id);
-    console.log('OBJECT ID', objectId);
+    // console.log('OBJECT ID', objectId);
 
     const specificSellerForOrder = await Order.aggregate([
       {
@@ -188,24 +189,70 @@ const getAllOrders = async (
   }
 };
 
-const getOrder = async (id: string): Promise<IOrder | null> => {
-  const result = await Order.findById(id)
-    .sort()
-    .populate({
-      path: 'cow',
-      populate: {
-        path: 'seller',
-        select: '-password',
-      },
-    })
-    .populate({
-      path: 'buyer',
-      select: '-password',
-    });
+const getOrder = async (
+  id: string,
+  tokenUser: JwtPayload | null
+): Promise<IOrder | null> => {
+  //Rolebased response
 
-  if (!result) {
+  let result = null;
+
+  if (tokenUser?.role == 'admin') {
+    result = await Order.findById(id)
+      .sort({ createdAt: -1 })
+      .populate({
+        path: 'cow',
+        populate: {
+          path: 'seller',
+          select: '-password',
+        },
+      })
+      .populate({
+        path: 'buyer',
+        select: '-password',
+      });
+    if (!result) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Order not found!');
+    }
+  } else if (tokenUser?.role == 'seller') {
+    result = await Order.findOne({ _id: id, seller: tokenUser?.id })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: 'cow',
+        populate: {
+          path: 'seller',
+          select: '-password',
+        },
+      })
+      .populate({
+        path: 'buyer',
+        select: '-password',
+      });
+    if (!result) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Order not found!');
+    }
+  } else if (tokenUser?.role == 'buyer') {
+    result = await Order.findOne({ _id: id, buyer: tokenUser?.id })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: 'cow',
+        populate: {
+          path: 'seller',
+          select: '-password',
+        },
+      })
+      .populate({
+        path: 'buyer',
+        select: '-password',
+      });
+    if (!result) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'Order not found!');
+    }
+  } else {
+    console.log('DHUUUKSEEEE ERRRROR');
     throw new ApiError(httpStatus.NOT_FOUND, 'Order not found!');
   }
+
   return result;
 };
 

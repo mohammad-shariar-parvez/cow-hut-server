@@ -121,6 +121,7 @@ const updateMyProfile = async (
     new: true, // return new document of the DB
   })
     .select('phoneNumber name address')
+
     .exec();
   return result;
 };
