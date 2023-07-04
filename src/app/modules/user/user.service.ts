@@ -16,7 +16,7 @@ const createMyProfile = async (
   const result = await User.findById(tokenUser?.id)
     .select('phoneNumber name address')
     .exec();
-  console.log('TOKEN USER ID FOR PROFILE ', result);
+
   return result;
 };
 
@@ -35,7 +35,10 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
   } catch (error) {
     await session.abortTransaction();
     await session.endSession();
-    throw error;
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'User Already Exists with this phone number'
+    );
   }
   if (newUserData) {
     newUserData = await User.findOne({ _id: newUserData._id });

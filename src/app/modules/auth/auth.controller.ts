@@ -60,7 +60,7 @@ const refreshToken: RequestHandler = catchAsync(
     sendResponse<IRefreshTokenResponse>(res, {
       statusCode: 200,
       success: true,
-      message: 'User logged in successfully !',
+      message: 'New access token generated successfully !',
       data: result,
     });
   }

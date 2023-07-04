@@ -37,7 +37,7 @@ const loginAdmin = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'User logged in successfully !',
+    message: 'Admin logged in successfully !',
     data: others,
   });
 });
@@ -58,7 +58,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IRefreshTokenResponse>(res, {
     statusCode: 200,
     success: true,
-    message: 'User logged in successfully !',
+    message: 'Admin logged in successfully !',
     data: result,
   });
 });

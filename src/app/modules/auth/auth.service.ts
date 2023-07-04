@@ -11,11 +11,48 @@ import {
   ILoginResponse,
   IRefreshTokenResponse,
 } from './auth.interface';
+import mongoose from 'mongoose';
 
 const signupUser = async (user: IUser): Promise<IUser | null> => {
-  const result = await User.create(user);
-  return result;
+  let newUserData = null;
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    const newUser = await User.create([user], { session });
+    if (!newUser.length) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create user');
+    }
+    newUserData = newUser[0];
+    await session.commitTransaction();
+    await session.endSession();
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'User Already Exists with this phone number'
+    );
+  }
+  if (newUserData) {
+    newUserData = await User.findOne({ _id: newUserData._id });
+  }
+
+  return newUserData;
 };
+// ALTERNATIVE
+// const signupUser = async (user: IUser): Promise<IUser | null> => {
+//   try {
+//     const result = await User.create(user);
+//     return result;
+//   } catch (error) {
+//     if (error) {
+//       // Duplicate key error, phoneNumber already exists
+//       throw new ApiError(httpStatus.BAD_REQUEST, 'Phone number already exist');
+//     }
+//     // Handle other errors or rethrow the original error
+//     throw new ApiError(httpStatus.BAD_REQUEST, 'Phone number already exist');
+//   }
+// };
 
 const loginUser = async (payload: ILogin): Promise<ILoginResponse> => {
   const { phoneNumber, password } = payload;

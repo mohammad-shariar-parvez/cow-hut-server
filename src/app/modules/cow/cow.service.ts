@@ -98,8 +98,6 @@ const updateCow = async (
   tokenUser: JwtPayload | null
 ): Promise<ICow | null> => {
   const isExist = await Cow.findById(id);
-  // console.log('IS EXIST', isExist);
-  // console.log('YEEE MIELSE', isExist?.seller.toString(), tokenUser?.id);
 
   if (isExist?.seller.toString() !== tokenUser?.id) {
     throw new ApiError(

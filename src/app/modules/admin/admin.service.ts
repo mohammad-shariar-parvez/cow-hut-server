@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import { IAdmin } from './admin.interface';
-import { Admin } from './admin.model';
+
 import config from '../../../config';
 import { Secret } from 'jsonwebtoken';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
@@ -11,11 +11,7 @@ import {
   IRefreshTokenResponse,
 } from '../auth/auth.interface';
 import mongoose from 'mongoose';
-
-// const createAdmin1 = async (adminData: IAdmin): Promise<IAdmin | null> => {
-//   const result = await Admin.create(adminData);
-//   return result;
-// };
+import { Admin } from './admin.model';
 
 const createAdmin = async (admin: IAdmin): Promise<IAdmin | null> => {
   let newAdminData = null;
@@ -33,7 +29,10 @@ const createAdmin = async (admin: IAdmin): Promise<IAdmin | null> => {
   } catch (error) {
     await session.abortTransaction();
     await session.endSession();
-    throw error;
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'Admin Already Exists with this phone number'
+    );
   }
   if (newAdminData) {
     newAdminData = await Admin.findOne({ _id: newAdminData._id }).select({
@@ -83,6 +82,7 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   //verify token
   // invalid token - synchronous
   let verifiedToken = null;
+
   try {
     verifiedToken = jwtHelpers.verifyToken(
       token,
@@ -91,7 +91,6 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   } catch (err) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
   }
-  // console.log('VARIFIED TOKEN', verifiedToken);
 
   const { id } = verifiedToken;
 

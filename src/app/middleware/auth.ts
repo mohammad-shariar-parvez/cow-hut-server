@@ -24,7 +24,6 @@ const auth =
 
       // guard with role
       if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
-        console.log('TOKEN IS--', req.user, requiredRoles);
         throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
       }
       next();

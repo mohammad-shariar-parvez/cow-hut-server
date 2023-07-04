@@ -44,12 +44,16 @@ const AdminSchema = new Schema<IAdmin, AdminModel>(
     timestamps: true,
     toJSON: {
       virtuals: true,
+      transform: function (doc, ret) {
+        delete ret.password; // Exclude password field from the response
+        return ret;
+      },
     },
     strict: 'throw',
   }
 );
 
-AdminSchema.statics.isUserExist = async function (
+AdminSchema.statics.isAdminExist = async function (
   phoneNumber: string
 ): Promise<IAdmin | null> {
   return await Admin.findOne(

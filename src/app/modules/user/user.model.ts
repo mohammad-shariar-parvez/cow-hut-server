@@ -8,8 +8,15 @@ import config from '../../../config';
 const UserSchema = new Schema<IUser, UserModel>(
   {
     role: { type: String, enum: ['seller', 'buyer'], required: true },
-    password: { type: String, required: true },
-    phoneNumber: { type: String, required: true, unique: true },
+    password: {
+      type: String,
+      required: true,
+    },
+    phoneNumber: {
+      type: String,
+      unique: true,
+      required: true,
+    },
     name: {
       type: {
         firstName: { type: String, required: true },

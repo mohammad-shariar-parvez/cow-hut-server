@@ -11,7 +11,7 @@ const createOrders = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'user created successfully!',
+    message: 'Order created successfully!',
     data: result,
   });
 });
@@ -23,7 +23,7 @@ const getAllOrders = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IOrder[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'User retrieved successfully !',
+    message: 'Order retrieved successfully !',
     meta: result.meta,
     data: result.data,
   });

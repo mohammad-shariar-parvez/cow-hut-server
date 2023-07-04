@@ -97,8 +97,6 @@ const createOrder = async (payload: IOrder): Promise<IOrder | null> => {
 const getAllOrders = async (
   requestedUser: any
 ): Promise<IGenericResponse<IOrder[]>> => {
-  // console.log(requestedUser);
-
   const result = await Order.find()
     .sort()
     .populate({
@@ -137,7 +135,6 @@ const getAllOrders = async (
     };
   } else {
     const objectId = new mongoose.Types.ObjectId(requestedUser.id);
-    // console.log('OBJECT ID', objectId);
 
     const specificSellerForOrder = await Order.aggregate([
       {
@@ -249,7 +246,6 @@ const getOrder = async (
       throw new ApiError(httpStatus.NOT_FOUND, 'Order not found!');
     }
   } else {
-    console.log('DHUUUKSEEEE ERRRROR');
     throw new ApiError(httpStatus.NOT_FOUND, 'Order not found!');
   }
 
