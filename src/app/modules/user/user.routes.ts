@@ -7,12 +7,19 @@ import { requestValidation } from '../../middleware/validationRequest';
 import auth from '../../middleware/auth';
 const router = express.Router();
 
+router.get(
+  '/my-profile',
+  auth(ENUM_USER_ROLE.BUYER, ENUM_USER_ROLE.SELLER),
+  UserController.createMyProfile
+);
+
 router.post(
   '/user-create',
   requestValidation.validateRequest(UserValidation.createUserZodSchema),
   auth(ENUM_USER_ROLE.ADMIN),
   UserController.createUser
 );
+
 router.get('/', auth(ENUM_USER_ROLE.ADMIN), UserController.getAllUsers);
 router.get('/:id', auth(ENUM_USER_ROLE.ADMIN), UserController.getSingleUser);
 router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), UserController.deleteUser);

@@ -84,6 +84,16 @@
             "date": 1688429505603,
             "name": "E:\\PG-HERO-2\\assignments\\assignment-4\\cow-hub-server\\logs\\winston\\errors\\mspu-2023-04-07-06-error.log",
             "hash": "4a798952dc0c79bee15f8ddffee26d47959969f46695faa1769c8af743038e42"
+        },
+        {
+            "date": 1688433184415,
+            "name": "E:\\PG-HERO-2\\assignments\\assignment-4\\cow-hub-server\\logs\\winston\\errors\\mspu-2023-04-07-07-error.log",
+            "hash": "461d4e2ba1a430d21b76b94e26cfd067a12505366f0427eed361d1c89eb56020"
+        },
+        {
+            "date": 1688436077220,
+            "name": "E:\\PG-HERO-2\\assignments\\assignment-4\\cow-hub-server\\logs\\winston\\errors\\mspu-2023-04-07-08-error.log",
+            "hash": "19dc2beb07120e397ba761661accf659add8a4d2aeea1d6176ed4bdbd6f8cde2"
         }
     ],
     "hashType": "sha256"

@@ -9,7 +9,7 @@ const UserSchema = new Schema<IUser>(
   {
     role: { type: String, enum: ['seller', 'buyer'], required: true },
     password: { type: String, required: true },
-    phoneNumber: { type: String, required: true },
+    phoneNumber: { type: String, required: true, unique: true },
     name: {
       type: {
         firstName: { type: String, required: true },
