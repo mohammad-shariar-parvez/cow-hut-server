@@ -13,6 +13,13 @@ router.get(
   UserController.createMyProfile
 );
 
+router.patch(
+  '/my-profile',
+  requestValidation.validateRequest(UserValidation.updateUserZodSchema),
+  auth(ENUM_USER_ROLE.BUYER, ENUM_USER_ROLE.SELLER),
+  UserController.updateMyProfile
+);
+
 router.post(
   '/user-create',
   requestValidation.validateRequest(UserValidation.createUserZodSchema),
@@ -29,4 +36,5 @@ router.patch(
   auth(ENUM_USER_ROLE.ADMIN),
   UserController.updateUser
 );
+
 export const UserRoutes = router;

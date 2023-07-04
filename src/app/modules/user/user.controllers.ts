@@ -78,6 +78,20 @@ const createMyProfile: RequestHandler = catchAsync(
     });
   }
 );
+const updateMyProfile: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const updatedData = req.body;
+    const tokenUser = req.user;
+    const result = await UserService.updateMyProfile(tokenUser, updatedData);
+
+    sendResponse<Partial<IUser>>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Profile Updated successfully !',
+      data: result,
+    });
+  }
+);
 
 export const UserController = {
   createUser,
@@ -86,4 +100,5 @@ export const UserController = {
   updateUser,
   deleteUser,
   createMyProfile,
+  updateMyProfile,
 };

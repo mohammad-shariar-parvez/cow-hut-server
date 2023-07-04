@@ -1,16 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import { IUser } from './user.interface';
 import { User } from './user.model';
 import httpStatus from 'http-status';
+import bcrypt from 'bcrypt';
 import ApiError from '../../../errors/ApiError';
 import { IGenericResponse } from '../../../interface/error';
 import { Cow } from '../cow/cow.model';
+import { JwtPayload } from 'jsonwebtoken';
+import config from '../../../config';
 
 const createMyProfile = async (
   tokenUser: JwtPayload | null
 ): Promise<IUser | null> => {
-  const result = await User.findById(tokenUser.id)
+  const result = await User.findById(tokenUser?.id)
     .select('phoneNumber name address')
     .exec();
   console.log('TOKEN USER ID FOR PROFILE ', result);
@@ -85,6 +88,42 @@ const updateUser = async (
   });
   return result;
 };
+const updateMyProfile = async (
+  tokenUser: JwtPayload | null,
+  payload: Partial<IUser>
+): Promise<Partial<IUser> | null> => {
+  const objectId: Types.ObjectId = new Types.ObjectId(tokenUser?.id);
+  const isExist = await User.findById(objectId);
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found!');
+  }
+  const { name, password, ...userData } = payload;
+  const updatedStudentData: Partial<IUser> = { ...userData };
+
+  // Take out Nested name properties
+  if (name && Object.keys(name).length > 0) {
+    Object.keys(name).forEach(key => {
+      const nameKey = `name.${key}` as keyof Partial<IUser>;
+      (updatedStudentData as any)[nameKey] = name[key as keyof typeof name];
+    });
+  }
+
+  //Hash password
+  if (password) {
+    const hashedPass: string = await bcrypt.hash(
+      password,
+      Number(config.bycrypt_salt_rounds)
+    );
+    updatedStudentData.password = hashedPass;
+  }
+
+  const result = await User.findByIdAndUpdate(objectId, updatedStudentData, {
+    new: true, // return new document of the DB
+  })
+    .select('phoneNumber name address')
+    .exec();
+  return result;
+};
 
 const deleteUser = async (id: string): Promise<IUser | null> => {
   let deleteUser = null;
@@ -125,4 +164,5 @@ export const UserService = {
   updateUser,
   deleteUser,
   createMyProfile,
+  updateMyProfile,
 };
